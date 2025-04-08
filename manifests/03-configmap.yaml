@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pihole-config
+  namespace: pihole
+data:
+  FTLCONF_dns_upstreams: "127.0.0.1#5054;192.168.178.1"
+  FTLCONF_dns_listeningMode: "all"
+  FTLCONF_database_maxDBdays: "14"
+  FTLCONF_webserver_interface_boxed: "false"
+  # FTLCONF_misc_privacylevel: "1"
+  TZ: "Europe/Berlin"
