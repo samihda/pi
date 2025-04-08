@@ -55,7 +55,7 @@ spec:
         - name: DNS2
           value: 127.0.0.1#5054
 
-      - image: pihole/pihole:2025.03.1
+      - image: pihole/pihole:2025.04.0
         imagePullPolicy: IfNotPresent
         name: pihole
         env:
