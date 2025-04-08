@@ -1,0 +1,106 @@
+# https://github.com/pi-hole/docker-pi-hole/issues/862
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: pihole
+  name: pihole
+  namespace: pihole
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      app: pihole
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: pihole
+    spec:
+      dnsPolicy: None
+      dnsConfig:
+        nameservers:
+          - 127.0.0.1
+          - 1.1.1.1
+
+      containers:
+      - image: visibilityspots/cloudflared:v2025.2.1
+        imagePullPolicy: IfNotPresent
+        name: cloudflared
+        ports:
+        - containerPort: 5054
+          name: dns
+          protocol: TCP
+        - containerPort: 5054
+          name: dns-udp
+          protocol: UDP
+        env:
+        - name: TUNNEL_METRICS
+          value: 127.0.0.1:3000
+        - name: TZ
+          value: "Europe/Berlin"
+        - name: WEBPASSWORD
+          value: admin
+        - name: ServerIP
+          value: 192.168.178.20
+        - name: DNS1
+          value: 127.0.0.1#5054
+        - name: DNS2
+          value: 127.0.0.1#5054
+
+      - image: pihole/pihole:2025.03.1
+        imagePullPolicy: IfNotPresent
+        name: pihole
+        env:
+        - name: ServerIP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: FTLCONF_webserver_api_password
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: pihole-webpassword
+        envFrom:
+        - configMapRef:
+            name: pihole-config
+        resources:
+          requests:
+            memory: "80Mi"
+          limits:
+            memory: "100Mi"
+        ports:
+        - containerPort: 80
+          name: pihole-http
+          protocol: TCP
+        - containerPort: 53
+          name: pihole-dns-tcp
+          protocol: TCP
+        - containerPort: 53
+          name: pihole-dns-udp
+          protocol: UDP
+        - containerPort: 443
+          name: pihole-ssl
+          protocol: TCP
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /etc/pihole
+          name: config
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: pihole-config
+status: {}
