@@ -52,3 +52,28 @@ spec:
     app: pihole
   loadBalancerIP: 192.168.178.20
   type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: cloudflared
+  name: cloudflared
+  namespace: pihole
+spec:
+  ports:
+  - name: dns
+    protocol: TCP
+    port: 5054
+    targetPort: dns
+  - name: dns-udp
+    protocol: UDP
+    port: 5054
+    targetPort: dns-udp
+  - name: metrics
+    protocol: TCP
+    port: 8080
+    targetPort: metrics
+  selector:
+    app: cloudflared
+  clusterIP: 10.43.0.11 # https://kubernetes.io/docs/concepts/services-networking/cluster-ip-allocation/
