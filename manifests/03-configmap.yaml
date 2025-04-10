@@ -4,7 +4,7 @@ metadata:
   name: pihole-config
   namespace: pihole
 data:
-  FTLCONF_dns_upstreams: "127.0.0.1#5054;10.43.0.11#5054"
+  FTLCONF_dns_upstreams: "10.43.0.11#5054"
   FTLCONF_dns_listeningMode: "all"
   FTLCONF_database_maxDBdays: "7"
   FTLCONF_database_DBinterval: "300"
