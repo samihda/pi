@@ -29,10 +29,6 @@ spec:
         imagePullPolicy: IfNotPresent
         name: pihole
         env:
-        - name: ServerIP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
         - name: FTLCONF_webserver_api_password
           valueFrom:
             secretKeyRef:
@@ -113,5 +109,3 @@ spec:
         env:
         - name: TZ
           value: "Europe/Berlin"
-        - name: ServerIP
-          value: 192.168.178.20
