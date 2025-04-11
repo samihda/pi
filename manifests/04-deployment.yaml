@@ -20,7 +20,6 @@ spec:
     type: RollingUpdate
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: pihole
     spec:
@@ -68,7 +67,6 @@ spec:
       - name: config
         persistentVolumeClaim:
           claimName: pihole-config
-status: {}
 ---
 apiVersion: apps/v1
 kind: Deployment
