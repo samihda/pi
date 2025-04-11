@@ -8,7 +8,7 @@ metadata:
   namespace: pihole
 spec:
   replicas: 1
-  revisionHistoryLimit: 5
+  revisionHistoryLimit: 2
   selector:
     matchLabels:
       app: pihole
@@ -70,7 +70,7 @@ metadata:
   name: cloudflared
   namespace: pihole
 spec:
-  revisionHistoryLimit: 5
+  revisionHistoryLimit: 2
   selector:
     matchLabels:
       app: cloudflared
