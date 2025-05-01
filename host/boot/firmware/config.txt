@@ -42,6 +42,8 @@ arm_boost=1
 dtoverlay=disable-wifi
 dtoverlay=disable-bt
 
+# program_usb_boot_mode=1
+
 [cm4]
 # Enable host mode on the 2711 built-in XHCI USB controller.
 # This line should be removed if the legacy DWC2 controller is required
