@@ -6,8 +6,11 @@ metadata:
 data:
   FTLCONF_dns_upstreams: "10.43.0.11#5054"
   FTLCONF_dns_listeningMode: "all"
+  FTLCONF_dns_reply_host_force4: "true"
+  FTLCONF_dns_reply_host_IPv4: "192.168.178.20"
   FTLCONF_database_maxDBdays: "7"
   FTLCONF_database_DBinterval: "300"
+  FTLCONF_revServers: "true,192.168.178.0/24,192.168.178.1,fritz.box"
   FTLCONF_webserver_interface_boxed: "false"
   # FTLCONF_misc_privacylevel: "1"
   TZ: "Europe/Berlin"
