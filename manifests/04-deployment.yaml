@@ -22,7 +22,7 @@ spec:
         app: pihole
     spec:
       containers:
-      - image: pihole/pihole:2025.06.1
+      - image: pihole/pihole:2025.06.2
         imagePullPolicy: IfNotPresent
         name: pihole
         env:
@@ -79,7 +79,7 @@ spec:
         app: cloudflared
     spec:
       containers:
-      - image: visibilityspots/cloudflared:v2025.5.0
+      - image: visibilityspots/cloudflared:v2025.6.1
         imagePullPolicy: IfNotPresent
         name: cloudflared
         ports:
