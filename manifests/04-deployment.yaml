@@ -22,7 +22,7 @@ spec:
         app: pihole
     spec:
       containers:
-      - image: pihole/pihole:2025.06.2
+      - image: pihole/pihole:2025.07.1
         imagePullPolicy: IfNotPresent
         name: pihole
         env:
