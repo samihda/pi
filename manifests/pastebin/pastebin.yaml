@@ -16,7 +16,9 @@ spec:
     storage: 512Mi
   accessModes:
     - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
   hostPath:
+    type: Directory
     path: "/mnt/pastebin" # single-node cluster only
 ---
 apiVersion: v1
