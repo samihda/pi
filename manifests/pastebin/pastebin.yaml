@@ -1,0 +1,98 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pastebin
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  namespace: pastebin
+  name: pastebin-pv
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 512Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/pastebin" # single-node cluster only
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: pastebin
+  name: pastebin-pvc
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 512Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: pastebin
+  name: pastebin
+  namespace: pastebin
+spec:
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: pastebin
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: pastebin
+    spec:
+      containers:
+      - image: ghcr.io/samihda/pastebin:latest
+        imagePullPolicy: IfNotPresent
+        name: pastebin
+        livenessProbe:
+          httpGet:
+            path: /livez
+            port: 8000
+          initialDelaySeconds: 3
+          periodSeconds: 30
+        ports:
+        - containerPort: 8000
+          name: pastebin-http
+          protocol: TCP
+        env:
+        - name: PASTEBIN_ROOT
+          value: "/var/www"
+        volumeMounts:
+        - mountPath: /var/www
+          name: pastebin-storage
+      volumes:
+      - name: pastebin-storage
+        persistentVolumeClaim:
+          claimName: pastebin-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: pastebin
+  name: pastebin
+  labels:
+    app: pastebin
+spec:
+  ports:
+  - name: pastebin-http
+    protocol: TCP
+    port: 80
+    targetPort: 8000
+  selector:
+    app: pastebin
+  loadBalancerIP: 192.168.178.12
+  type: LoadBalancer
