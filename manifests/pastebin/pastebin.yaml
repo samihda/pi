@@ -11,15 +11,23 @@ metadata:
   labels:
     type: local
 spec:
-  storageClassName: manual
+  storageClassName: local-storage
   capacity:
     storage: 512Mi
+  volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  hostPath:
-    type: Directory
-    path: "/mnt/pastebin" # single-node cluster only
+  local:
+    path: "/mnt/pastebin"
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - raspberrypi
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -27,7 +35,7 @@ metadata:
   namespace: pastebin
   name: pastebin-pvc
 spec:
-  storageClassName: manual
+  storageClassName: local-storage
   accessModes:
     - ReadWriteOnce
   resources:
