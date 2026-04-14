@@ -25,12 +25,6 @@ spec:
       - image: pihole/pihole:2025.11.1
         imagePullPolicy: IfNotPresent
         name: pihole
-        env:
-        - name: FTLCONF_webserver_api_password
-          valueFrom:
-            secretKeyRef:
-              key: password
-              name: pihole-webpassword
         envFrom:
         - configMapRef:
             name: pihole-config

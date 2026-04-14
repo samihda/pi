@@ -11,6 +11,7 @@ data:
   FTLCONF_database_maxDBdays: "7"
   FTLCONF_database_DBinterval: "300"
   FTLCONF_revServers: "true,192.168.178.0/24,192.168.178.1,fritz.box"
+  FTLCONF_webserver_api_password: ""
   FTLCONF_webserver_interface_boxed: "false"
   # FTLCONF_misc_privacylevel: "1"
   TZ: "Europe/Berlin"
